@@ -11,38 +11,32 @@ const int MAXN = 1e6 + 5;
 const int MOD = 1e9 + 7;
 
 int n;
-vector<int> v;
+vector<ll> v;
 
 void input()
 {
     cin >> n;
-    v.resize(n);
-    for (int &x : v)
+    v.assign(n, 0);
+    for (ll &x : v)
         cin >> x;
 }
 
 void solve()
 {
-    int dpl[n] = {}, dpr[n] = {};
-    dpl[0] = dpr[n - 1] = 1;
-    for (int i = 1; i < n; i++)
+    priority_queue<ll, vector<ll>, greater<ll>> q;
+    for (ll x : v)
+        q.push(x);
+    ll res = 0;
+    while (q.size() > 1)
     {
-        if (v[i] > v[i - 1])
-            dpl[i] = dpl[i - 1] + 1;
-        else
-            dpl[i] = 1;
+        ll a = q.top();
+        q.pop();
+        ll b = q.top();
+        q.pop();
+        ll cost = (a + b) % MOD;
+        res = (res + cost) % MOD;
+        q.push(cost);
     }
-
-    for (int i = n - 2; i >= 0; i--)
-    {
-        if (v[i] > v[i + 1])
-            dpr[i] = dpr[i + 1] + 1;
-        else
-            dpr[i] = 1;
-    }
-    int res = 0;
-    for (int i = 0; i < n; i++)
-        res = max(res, dpl[i] + dpr[i] - 1);
     cout << res;
 }
 

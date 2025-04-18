@@ -1,0 +1,26 @@
+vector<vector<ll>> mulMatrix(vector<vector<ll>> &a, vector<vector<ll>> &b) {
+    vector<vector<ll>> res(2, vector<ll>(2, 0));
+    for(int i = 0; i < 2; i++) {
+        for(int j = 0; j < 2; j++) {
+            for(int k = 0; k < 2; k++) res[i][j] = (res[i][j] + a[i][k] * b[k][j]) % MOD;
+        }
+    }
+    return res;
+}
+
+vector<vector<ll>> powMod(vector<vector<ll>> &a, ll k) {
+    if(k == 1) return a;
+    vector<vector<ll>> res = powMod(a, k / 2);
+    res = mulMatrix(res, res);
+    if(k % 2) res = mulMatrix(res, a);
+    return res;
+}
+
+ll fiN(int n) {
+    if(n == 0 || n == 1) {
+        cout << n;
+        return;
+    }
+    vector<vector<ll>> a = {{1, 1}, {1, 0}};
+    return powMod(a, n - 1)[0][0];
+}

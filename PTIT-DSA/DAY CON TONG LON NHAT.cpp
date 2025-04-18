@@ -10,53 +10,42 @@ using namespace std;
 const int MAXN = 1e6 + 5;
 const int MOD = 1e9 + 7;
 
-int n;
-vector<int> v;
+int n, q;
 
 void input()
 {
-    cin >> n;
-    v.resize(n);
+    cin >> n >> q;
+    vector<int> v(n);
     for (int &x : v)
         cin >> x;
-}
-
-void solve()
-{
-    int dpl[n] = {}, dpr[n] = {};
-    dpl[0] = dpr[n - 1] = 1;
+    int dp[n] = {};
+    dp[0] = max(dp[0], dp[0] + v[0]);
     for (int i = 1; i < n; i++)
+        dp[i] = max(dp[i - 1] + v[i], dp[i - 1]);
+    for (int i = 0; i < q; i++)
     {
-        if (v[i] > v[i - 1])
-            dpl[i] = dpl[i - 1] + 1;
+        int l, r;
+        cin >> l >> r;
+        --l;
+        --r;
+        if (l == 0)
+            cout << dp[r];
         else
-            dpl[i] = 1;
+            cout << dp[r] - dp[l - 1];
+        cout << endl;
     }
-
-    for (int i = n - 2; i >= 0; i--)
-    {
-        if (v[i] > v[i + 1])
-            dpr[i] = dpr[i + 1] + 1;
-        else
-            dpr[i] = 1;
-    }
-    int res = 0;
-    for (int i = 0; i < n; i++)
-        res = max(res, dpl[i] + dpr[i] - 1);
-    cout << res;
 }
 
 void testCase()
 {
     input();
-    solve();
 }
 
 int main()
 {
     faster();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
     {
         testCase();

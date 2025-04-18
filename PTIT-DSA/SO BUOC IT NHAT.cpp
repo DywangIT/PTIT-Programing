@@ -11,45 +11,31 @@ const int MAXN = 1e6 + 5;
 const int MOD = 1e9 + 7;
 
 int n;
-vector<int> v;
 
 void input()
 {
     cin >> n;
-    v.resize(n);
+    vector<int> v(n);
     for (int &x : v)
         cin >> x;
-}
-
-void solve()
-{
-    int dpl[n] = {}, dpr[n] = {};
-    dpl[0] = dpr[n - 1] = 1;
+    int dp[n] = {};
+    dp[0] = 1;
     for (int i = 1; i < n; i++)
     {
-        if (v[i] > v[i - 1])
-            dpl[i] = dpl[i - 1] + 1;
-        else
-            dpl[i] = 1;
+        int cntmax = 0;
+        for (int j = 0; j < i; j++)
+        {
+            if (v[j] <= v[i])
+                cntmax = max(cntmax, dp[j]);
+        }
+        dp[i] = cntmax + 1;
     }
-
-    for (int i = n - 2; i >= 0; i--)
-    {
-        if (v[i] > v[i + 1])
-            dpr[i] = dpr[i + 1] + 1;
-        else
-            dpr[i] = 1;
-    }
-    int res = 0;
-    for (int i = 0; i < n; i++)
-        res = max(res, dpl[i] + dpr[i] - 1);
-    cout << res;
+    cout << n - *max_element(dp, dp + n);
 }
 
 void testCase()
 {
     input();
-    solve();
 }
 
 int main()

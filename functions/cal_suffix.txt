@@ -1,0 +1,22 @@
+ll cal_suffix(vector<string> suffixExp) {
+    stack<ll> st;
+
+    for (string x : suffixExp) {
+        if (x == "+" || x == "-" || x == "*" || x == "/") {
+            ll b = st.top(); st.pop();
+            ll a = st.top(); st.pop();
+            if (x == "+") st.push(a + b);
+            if (x == "-") st.push(a - b);
+            if (x == "*") st.push(a * b);
+            if (x == "/") st.push(a / b);
+        }
+        else {
+            ll tmp = 0;
+            for (char c : x) {
+                tmp = tmp * 10 + c - '0';
+            }
+            st.push(tmp);
+        }
+    }
+    return st.top();
+}

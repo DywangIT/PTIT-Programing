@@ -1,0 +1,14 @@
+string suffix_to_inffix(string s) {
+    stack<string> st;
+    for (char c : s) {
+        if (c == '^' || c == '+' || c == '-' || c == '*' || c == '/') {
+            string a = st.top();
+            st.pop();
+            string b = st.top();
+            st.pop();
+            st.push("(" + b + c + a + ")");
+        }
+        else st.push(string(1, c));
+    }
+    return st.top();
+}

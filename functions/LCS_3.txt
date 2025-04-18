@@ -1,0 +1,16 @@
+int LCS_3(string a, string b, string c) {
+    int x = a.size(); int y = b.size(); int z = c.size();
+    vector<vector<vector<int>>> dp(105, vector<vector<int>>(105, vector<int>(105, 0)));
+
+    for (int i = 1; i <= x; i++) {
+        for (int j = 1; j <= y; j++) {
+            for (int k = 1; k <= z; k++) {
+                if (a[i - 1] == b[j - 1] && a[i - 1] == c[k - 1])
+                    dp[i][j][k] = dp[i - 1][j - 1][k - 1] + 1;
+                else
+                    dp[i][j][k] = max({ dp[i - 1][j][k], dp[i][j - 1][k], dp[i][j][k - 1], dp[i - 1][j - 1][k], dp[i - 1][j][k - 1], dp[i][j - 1][k - 1] });
+            }
+        }
+    }
+   return dp[x][y][z];
+}

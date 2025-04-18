@@ -23,27 +23,24 @@ void input()
 
 void solve()
 {
-    int dpl[n] = {}, dpr[n] = {};
-    dpl[0] = dpr[n - 1] = 1;
-    for (int i = 1; i < n; i++)
+    vector<ll> dp(n + 1, 0);
+    if (n == 1 || n == 2)
     {
-        if (v[i] > v[i - 1])
-            dpl[i] = dpl[i - 1] + 1;
-        else
-            dpl[i] = 1;
+        cout << v[n - 1];
+        return;
     }
-
-    for (int i = n - 2; i >= 0; i--)
+    dp[0] = v[0];
+    dp[1] = v[1];
+    ll max1 = v[0], max2 = v[1];
+    for (int i = 2; i < n; i++)
     {
-        if (v[i] > v[i + 1])
-            dpr[i] = dpr[i + 1] + 1;
-        else
-            dpr[i] = 1;
+        dp[i] = max1 + v[i];
+        if (max2 > max1)
+            max1 = max2;
+        if (dp[i] > max2)
+            max2 = dp[i];
     }
-    int res = 0;
-    for (int i = 0; i < n; i++)
-        res = max(res, dpl[i] + dpr[i] - 1);
-    cout << res;
+    cout << *max_element(dp.begin(), dp.end());
 }
 
 void testCase()

@@ -10,12 +10,12 @@ using namespace std;
 const int MAXN = 1e6 + 5;
 const int MOD = 1e9 + 7;
 
-int n;
+int n, k;
 vector<int> v;
 
 void input()
 {
-    cin >> n;
+    cin >> n >> k;
     v.resize(n);
     for (int &x : v)
         cin >> x;
@@ -23,27 +23,17 @@ void input()
 
 void solve()
 {
-    int dpl[n] = {}, dpr[n] = {};
-    dpl[0] = dpr[n - 1] = 1;
-    for (int i = 1; i < n; i++)
+    int dp[k + 1] = {};
+    dp[0] = 1;
+    for (int x = 1; x <= k; x++)
     {
-        if (v[i] > v[i - 1])
-            dpl[i] = dpl[i - 1] + 1;
-        else
-            dpl[i] = 1;
+        for (int i = 0; i < n; i++)
+        {
+            if (x >= v[i])
+                dp[x] = (dp[x] + dp[x - v[i]]) % MOD;
+        }
     }
-
-    for (int i = n - 2; i >= 0; i--)
-    {
-        if (v[i] > v[i + 1])
-            dpr[i] = dpr[i + 1] + 1;
-        else
-            dpr[i] = 1;
-    }
-    int res = 0;
-    for (int i = 0; i < n; i++)
-        res = max(res, dpl[i] + dpr[i] - 1);
-    cout << res;
+    cout << dp[k] % MOD;
 }
 
 void testCase()

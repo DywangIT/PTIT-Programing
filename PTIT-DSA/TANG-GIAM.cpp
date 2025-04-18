@@ -11,39 +11,34 @@ const int MAXN = 1e6 + 5;
 const int MOD = 1e9 + 7;
 
 int n;
-vector<int> v;
+vector<pair<double, double>> v;
 
 void input()
 {
     cin >> n;
-    v.resize(n);
-    for (int &x : v)
-        cin >> x;
+    v.clear();
+    for (int i = 1; i <= n; i++)
+    {
+        double x, y;
+        cin >> x >> y;
+        v.push_back({x, y});
+    }
 }
 
 void solve()
 {
-    int dpl[n] = {}, dpr[n] = {};
-    dpl[0] = dpr[n - 1] = 1;
+    int dp[n + 1] = {};
+    dp[0] = 1;
     for (int i = 1; i < n; i++)
     {
-        if (v[i] > v[i - 1])
-            dpl[i] = dpl[i - 1] + 1;
-        else
-            dpl[i] = 1;
+        for (int j = 0; j < i; j++)
+        {
+            if (v[j].first < v[i].first && v[j].second > v[i].second)
+                dp[i] = max(dp[i], dp[j]);
+        }
+        ++dp[i];
     }
-
-    for (int i = n - 2; i >= 0; i--)
-    {
-        if (v[i] > v[i + 1])
-            dpr[i] = dpr[i + 1] + 1;
-        else
-            dpr[i] = 1;
-    }
-    int res = 0;
-    for (int i = 0; i < n; i++)
-        res = max(res, dpl[i] + dpr[i] - 1);
-    cout << res;
+    cout << *max_element(dp, dp + n);
 }
 
 void testCase()

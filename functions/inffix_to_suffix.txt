@@ -1,0 +1,43 @@
+string inffix_to_suffix(string s) {
+    string suffix = "";
+    stack<char> oper;
+
+    for (char x : s) {
+        if (x == '(') oper.push(x);
+        else if(x == '^') {
+            while(!oper.empty() && oper.top() == '^') {
+                suffix.push_back(oper.top());
+                oper.pop();
+            }
+            oper.push(x);
+        }
+        else if (x == '*' || x == '/') {
+            while (!oper.empty() && (oper.top() == '*' || oper.top() == '/' || oper.top() == '^')) {
+                suffix.push_back(oper.top());
+                oper.pop();
+            }
+            oper.push(x);
+        }
+        else if (x == '+' || x == '-') {
+            while (!oper.empty() && (oper.top() == '*' || oper.top() == '/' || oper.top() == '+' || oper.top() == '-' || oper.top() == '^')) {
+                suffix.push_back(oper.top());
+                oper.pop();
+            }
+            oper.push(x);
+        }
+        else if (x == ')') {
+            while (oper.top() != '(') {
+                suffix.push_back(oper.top());
+                oper.pop();
+            }
+            oper.pop();
+        }
+        else suffix.push_back(x);
+    }
+    while (!oper.empty() && oper.top() != '(') {
+        suffix.push_back(oper.top());
+        oper.pop();
+    }
+
+    return suffix;
+}

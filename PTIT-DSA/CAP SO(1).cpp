@@ -11,39 +11,37 @@ const int MAXN = 1e6 + 5;
 const int MOD = 1e9 + 7;
 
 int n;
-vector<int> v;
+vector<pair<int, int>> v;
 
 void input()
 {
     cin >> n;
-    v.resize(n);
-    for (int &x : v)
-        cin >> x;
+    v.clear();
+    for (int i = 0; i < n; i++)
+    {
+        int x, y;
+        cin >> x >> y;
+        v.push_back({x, y});
+    }
+    sort(v.begin(), v.end(), [](pair<int, int> a, pair<int, int> b)
+         { return a.second < b.second; });
 }
 
 void solve()
 {
-    int dpl[n] = {}, dpr[n] = {};
-    dpl[0] = dpr[n - 1] = 1;
+    vector<int> dp(n + 1, 0);
+    dp[0] = 1;
     for (int i = 1; i < n; i++)
     {
-        if (v[i] > v[i - 1])
-            dpl[i] = dpl[i - 1] + 1;
-        else
-            dpl[i] = 1;
+        for (int j = 0; j < i; j++)
+        {
+            if (v[i].first > v[j].second)
+            {
+                dp[i] = max(dp[i], dp[j] + 1);
+            }
+        }
     }
-
-    for (int i = n - 2; i >= 0; i--)
-    {
-        if (v[i] > v[i + 1])
-            dpr[i] = dpr[i + 1] + 1;
-        else
-            dpr[i] = 1;
-    }
-    int res = 0;
-    for (int i = 0; i < n; i++)
-        res = max(res, dpl[i] + dpr[i] - 1);
-    cout << res;
+    cout << *max_element(dp.begin(), dp.end());
 }
 
 void testCase()

@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class FenwickTree {
+private:
+    vector<int> tree;
+    int n;
+    
+public:
+    FenwickTree(int size) : n(size), tree(size + 1, 0) {}
+    
+    void update(int index, int delta) {
+        while (index <= n) {
+            tree[index] += delta;
+            index += index & -index;
+        }
+    }
+    
+    int query(int index) {
+        int sum = 0;
+        while (index > 0) {
+            sum += tree[index];
+            index -= index & -index;
+        }
+        return sum;
+    }
+};
+
+long long countInversionTriplets(vector<int>& nums) {
+    if (nums.empty()) return 0;
+    
+    // Bước 1: Nén dữ liệu (coordinate compression)
+    vector<int> sorted_nums = nums;
+    sort(sorted_nums.begin(), sorted_nums.end());
+    sorted_nums.erase(unique(sorted_nums.begin(), sorted_nums.end()), sorted_nums.end());
+    
+    // Chuyển các giá trị về chỉ số từ 1 đến m (m là số phần tử phân biệt)
+    for (int& num : nums) {
+        num = lower_bound(sorted_nums.begin(), sorted_nums.end(), num) - sorted_nums.begin() + 1;
+    }
+    
+    int m = sorted_nums.size();
+    FenwickTree left_tree(m), right_tree(m);
+    
+    // Khởi tạo right_tree với tần số xuất hiện của mỗi phần tử
+    for (int num : nums) {
+        right_tree.update(num, 1);
+    }
+    
+    long long result = 0;
+    
+    for (int j = 0; j < nums.size(); ++j) {
+        int num = nums[j];
+        right_tree.update(num, -1); // Loại bỏ phần tử hiện tại khỏi right_tree
+        
+        // Số phần tử lớn hơn nums[j] ở bên trái (i < j)
+        int left_larger = left_tree.query(m) - left_tree.query(num);
+        
+        // Số phần tử nhỏ hơn nums[j] ở bên phải (k > j)
+        int right_smaller = right_tree.query(num - 1);
+        
+        result += (long long)left_larger * right_smaller;
+        
+        left_tree.update(num, 1); // Thêm phần tử hiện tại vào left_tree
+    }
+    
+    return result;
+}
+
+int main() {
+    vector<int> nums = {5, 3, 4, 2, 1};
+    cout << "So bo ba nghich the: " << countInversionTriplets(nums) << endl;
+    
+    nums = {1, 2, 3, 4, 5};
+    cout << "So bo ba nghich the: " << countInversionTriplets(nums) << endl;
+    
+    nums = {5, 4, 3, 2, 1};
+    cout << "So bo ba nghich the: " << countInversionTriplets(nums) << endl;
+    
+    return 0;
+}

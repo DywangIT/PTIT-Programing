@@ -1,0 +1,19 @@
+ll powMod(ll a, ll b) {
+    if(b == 1) return a % MOD;
+    ll x = powMod(a, b / 2);
+    x = (x * x) % MOD;
+    if(b % 2) return (x * a) % MOD;
+    return x;
+}
+
+ll powMod(ll n, ll k) {
+    ll res = 1;
+    while(k > 0) {
+        if(k % 2) {
+            res = (res * n) % MOD;
+        }
+        n = (n * n) % MOD;
+        k /= 2;
+    }
+    return res % MOD;
+}

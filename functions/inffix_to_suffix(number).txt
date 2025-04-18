@@ -1,0 +1,51 @@
+vector<string> inffix_to_suffix(string s) {
+    // toán tử, toán hạng và dấu ngoặc '()'
+    vector<string> v;
+    int size = s.size();
+    for (int i = 0; i < size; i++) {
+        if (isdigit(s[i])) {
+            string tmp = "";
+            while (isdigit(s[i]) && i < size) {
+                tmp += s[i];
+                ++i;
+            }
+            --i;
+            v.push_back(tmp);
+        }
+        else v.push_back(string(1, s[i]));
+    }
+    // biến đổi sang hậu tố
+    vector<string> suffix;
+    stack<string> oper;
+
+    for (string x : v) {
+        if (x == "(") oper.push(x);
+        else if (x == "*" || x == "/") {
+            while (!oper.empty() && (oper.top() == "*" || oper.top() == "/")) {
+                suffix.push_back(oper.top());
+                oper.pop();
+            }
+            oper.push(x);
+        }
+        else if (x == "+" || x == "-") {
+            while (!oper.empty() && (oper.top() == "*" || oper.top() == "/" || oper.top() == "+" || oper.top() == "-")) {
+                suffix.push_back(oper.top());
+                oper.pop();
+            }
+            oper.push(x);
+        }
+        else if (x == ")") {
+            while (oper.top() != "(") {
+                suffix.push_back(oper.top());
+                oper.pop();
+            }
+            oper.pop();
+        }
+        else suffix.push_back(x);
+    }
+    while (!oper.empty()) {
+        suffix.push_back(oper.top());
+        oper.pop();
+    }
+    return suffix;
+}

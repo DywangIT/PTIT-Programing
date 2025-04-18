@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define faster()                      \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);                    \
+    cout.tie(NULL);
+
+const int MAXN = 1e6 + 5;
+const int MOD = 1e9 + 7;
+
+vector<int> B;
+void prepare()
+{
+    for (int i = 1; i <= 100; i++)
+        B.push_back(i * i);
+}
+
+int n;
+
+void input()
+{
+    cin >> n;
+}
+
+void solve()
+{
+    int dp[n + 1] = {};
+    for (int i = 1; i <= n; i++)
+    {
+        int x = INT_MAX;
+        for (int j = 0; j < B.size() && B[j] <= i; j++)
+        {
+            x = min(dp[i - B[j]], x);
+        }
+        dp[i] = x + 1;
+    }
+    cout << dp[n];
+}
+
+void testCase()
+{
+    input();
+    solve();
+}
+
+int main()
+{
+    faster();
+    prepare();
+    int t = 1;
+    cin >> t;
+    while (t--)
+    {
+        testCase();
+        cout << endl;
+    }
+    return 0;
+}

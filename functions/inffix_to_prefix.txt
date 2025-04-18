@@ -1,0 +1,46 @@
+string inffix_to_prefix(string s) {
+    string suffix = "";
+    stack<char> oper;
+    for (int i = s.size() - 1; i >= 0; i--) {
+        char x = s[i];
+        if (x == ')') oper.push(x);
+        else if (x == '^') {
+            while (!oper.empty() && oper.top() == '^') {
+                suffix = oper.top() + suffix;
+                oper.pop();
+            }
+            oper.push(x);
+        }
+        else if (x == '*' || x == '/') {
+            while (!oper.empty() && (oper.top() == '*' || oper.top() == '/' || oper.top() == '^')) {
+                suffix = oper.top() + suffix;
+                oper.pop();
+            }
+            oper.push(x);
+        }
+        else if (x == '+' || x == '-') {
+            while (!oper.empty() && (oper.top() == '*' || oper.top() == '/' || oper.top() == '+' || oper.top() == '-' || oper.top() == '^')) {
+                suffix = oper.top() + suffix;
+                oper.pop();
+            }
+            oper.push(x);
+        }
+        else if (x == '(') {
+            while (!oper.empty()) {
+                if (oper.top() == ')') {
+                    oper.pop();
+                    break;
+                }
+                suffix = oper.top() + suffix;
+                oper.pop();
+            }
+        }
+        else suffix = x + suffix;
+    }
+    while (!oper.empty() && oper.top() != ')') {
+        suffix = oper.top() + suffix;
+        oper.pop();
+    }
+
+    return suffix;
+}

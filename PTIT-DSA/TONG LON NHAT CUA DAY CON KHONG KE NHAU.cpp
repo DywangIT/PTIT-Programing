@@ -12,7 +12,6 @@ const int MOD = 1e9 + 7;
 
 int n;
 vector<int> v;
-
 void input()
 {
     cin >> n;
@@ -23,27 +22,18 @@ void input()
 
 void solve()
 {
-    int dpl[n] = {}, dpr[n] = {};
-    dpl[0] = dpr[n - 1] = 1;
+    int dp[n + 1] = {};
+    dp[0] = v[0];
     for (int i = 1; i < n; i++)
     {
-        if (v[i] > v[i - 1])
-            dpl[i] = dpl[i - 1] + 1;
+        if (i == 1)
+            dp[i] = max(v[0], v[1]);
         else
-            dpl[i] = 1;
+        {
+            dp[i] = max(dp[i - 2] + v[i], dp[i - 1]);
+        }
     }
-
-    for (int i = n - 2; i >= 0; i--)
-    {
-        if (v[i] > v[i + 1])
-            dpr[i] = dpr[i + 1] + 1;
-        else
-            dpr[i] = 1;
-    }
-    int res = 0;
-    for (int i = 0; i < n; i++)
-        res = max(res, dpl[i] + dpr[i] - 1);
-    cout << res;
+    cout << dp[n - 1];
 }
 
 void testCase()

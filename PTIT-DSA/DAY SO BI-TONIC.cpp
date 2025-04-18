@@ -24,25 +24,29 @@ void input()
 void solve()
 {
     int dpl[n] = {}, dpr[n] = {};
-    dpl[0] = dpr[n - 1] = 1;
+    dpl[0] = v[0];
+    dpr[n - 1] = v[n - 1];
     for (int i = 1; i < n; i++)
     {
-        if (v[i] > v[i - 1])
-            dpl[i] = dpl[i - 1] + 1;
-        else
-            dpl[i] = 1;
+        for (int j = 0; j < i; j++)
+        {
+            if (v[j] < v[i])
+                dpl[i] = max(dpl[i], dpl[j]);
+        }
+        dpl[i] += v[i];
     }
-
     for (int i = n - 2; i >= 0; i--)
     {
-        if (v[i] > v[i + 1])
-            dpr[i] = dpr[i + 1] + 1;
-        else
-            dpr[i] = 1;
+        for (int j = i + 1; j < n; j++)
+        {
+            if (v[j] < v[i])
+                dpr[i] = max(dpr[i], dpr[j]);
+        }
+        dpr[i] += v[i];
     }
     int res = 0;
     for (int i = 0; i < n; i++)
-        res = max(res, dpl[i] + dpr[i] - 1);
+        res = max(res, dpr[i] + dpl[i] - v[i]);
     cout << res;
 }
 
