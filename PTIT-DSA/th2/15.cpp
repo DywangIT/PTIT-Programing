@@ -4,11 +4,11 @@ using namespace std;
 
 struct Node {
     int data;
-    Node *left, *right;
+    Node* left, * right;
     Node(int val) : data(val), left(nullptr), right(nullptr) {}
 };
 
-Node* buildCompleteBinaryTree(const vector<int> &arr, int index) {
+Node* buildCompleteBinaryTree(const vector<int>& arr, int index) {
     if (index >= arr.size()) return nullptr;
     Node* root = new Node(arr[index]);
     root->left = buildCompleteBinaryTree(arr, 2 * index + 1);
@@ -16,7 +16,7 @@ Node* buildCompleteBinaryTree(const vector<int> &arr, int index) {
     return root;
 }
 
-void postOrderTraversal(Node* root, vector<int> &result) {  
+void postOrderTraversal(Node* root, vector<int>& result) {
     if (!root) return;
     postOrderTraversal(root->left, result);
     result.push_back(root->data);
@@ -25,7 +25,7 @@ void postOrderTraversal(Node* root, vector<int> &result) {
 
 signed main() {
     int t; cin >> t;
-    while(t--) {
+    while (t--) {
         int n; cin >> n;
         vector<int> arr(n);
         for (int i = 0; i < n; i++) {

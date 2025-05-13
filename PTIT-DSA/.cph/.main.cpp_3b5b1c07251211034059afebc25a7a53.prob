@@ -1,1 +1,1 @@
-{"name":"Local: main","url":"d:\\PTIT-Programing\\PTIT-DSA\\main.cpp","tests":[{"id":1744526266700,"input":"1\n3 3\n2 1 2\n1 2 4\n1 3 200\n","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\PTIT-Programing\\PTIT-DSA\\main.cpp","group":"local","local":true}
+{"name":"Local: main","url":"d:\\PTIT-Programing\\PTIT-DSA\\main.cpp","tests":[{"id":1744526266700,"input":"2\n\n0 1\n\n2 0","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\PTIT-Programing\\PTIT-DSA\\main.cpp","group":"local","local":true}
